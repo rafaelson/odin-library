@@ -1,8 +1,9 @@
-function Book(title, author, pages, status) {
+function Book(title, author, pages, status, index) {
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.status = status;
+  this.index = index;
 }
 Book.prototype.info = function () {
   return `${this.title} by ${this.author}, ${this.pages} pages, ${this.status}`;
@@ -19,11 +20,16 @@ const bookTitle = document.querySelector("#book-title");
 const bookAuthor = document.querySelector("#book-author");
 const bookPages = document.querySelector("#book-pages");
 const bookStatus = document.querySelector("#book-status");
+const inputs = document.getElementsByTagName("input");
 const submitButton = document.querySelector(".submit-button");
-submitButton.addEventListener("click", addBookToLibrary);
+submitButton.addEventListener("click", () => {
+  toggleForm();
+  addBookToLibrary();
+  cleanInputs();
+});
 
-document.addEventListener("DOMContentLoaded", showInDOM, false);
-document.querySelector(".add-button").addEventListener("click", openForm);
+document.addEventListener("DOMContentLoaded", () => showInDOM(0));
+document.querySelector(".add-button").addEventListener("click", toggleForm);
 
 // const startButton = document.querySelector(".start");
 // startButton.addEventListener("click", () => {
@@ -42,17 +48,25 @@ function addBookToLibrary() {
     bookTitle.value,
     bookAuthor.value,
     bookPages.value,
-    status
+    status,
+    myLibrary.length
   );
-  showInDOM();
+  showInDOM(myLibrary.length - 1);
 }
 
-function openForm() {
+function cleanInputs() {
+  for (i = 0; i < inputs.length; i++) {
+    inputs[i].value = "";
+  }
+  bookStatus.checked = false;
+}
+
+function toggleForm() {
   form.classList.toggle("show-form");
 }
 
-function showInDOM() {
-  for (i = 0; i < myLibrary.length; i++) {
+function showInDOM(index) {
+  for (i = index; i < myLibrary.length; i++) {
     let temp = Object.assign(document.createElement("div"), {
       className: "card",
     });
