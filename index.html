@@ -9,8 +9,32 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <input type="button" value="Start" class="start" />
+    <!-- <div class="add-button">+</div> -->
+    <img src="icons/plus-circle.svg" alt="" class="add-button" />
+    <div class="container"></div>
+    <div class="form">
+      <div class="form-content">
+        <div class="form-container">
+          <div class="">
+            <label for="book-title">Title:</label>
+            <input type="text" name="title" id="book-title" />
+          </div>
+          <div>
+            <label for="book-author">Author:</label>
+            <input type="text" name="author" id="book-author" />
+          </div>
+          <div>
+            <label for="book-pages">Pages:</label>
+            <input type="number" name="pages" id="book-pages" />
+          </div>
+          <div>
+            <label for="book-status">Read?</label>
+            <input type="checkbox" name="status" id="book-status" />
+          </div>
+
+          <button type="submit" class="submit-button">Submit</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

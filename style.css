@@ -3,12 +3,33 @@ body {
   margin: 0;
 }
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-button {
+  /* width: 100px;
+  height: 100px;
+  background: red;
+  border-radius: 50%; */
+  position: fixed;
+  top: 92vh;
+  right: 1vh;
+  width: 50px;
+  height: auto;
+}
+
 .container {
   min-height: 100vh;
   margin: 0;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  justify-items: center;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
 }
 
 .card {
@@ -59,4 +80,36 @@ body {
 
 .author {
   font-size: 1.2rem;
+}
+
+.form {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.form-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1rem 1.5rem;
+  width: 400px;
+  height: 155px;
+  border-radius: 0.5rem;
+}
+
+.show-form {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
