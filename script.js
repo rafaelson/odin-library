@@ -31,12 +31,6 @@ submitButton.addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", () => showInDOM(0));
 document.querySelector(".add-button").addEventListener("click", toggleForm);
 
-// const startButton = document.querySelector(".start");
-// startButton.addEventListener("click", () => {
-//   startButton.remove();
-//   showInDOM();
-// });
-
 function addBookToLibrary() {
   let status;
   if (bookStatus.checked) {
@@ -54,6 +48,25 @@ function addBookToLibrary() {
   showInDOM(myLibrary.length - 1);
 }
 
+function removeBookFromLibrary(index) {
+  let book = document.querySelector(`.book-${index}`);
+  book.remove();
+  myLibrary.splice(index, 1);
+  dealWithIndexes(index);
+}
+
+function dealWithIndexes(index) {
+  for (i = index; i < myLibrary.length; i++) {
+    myLibrary[i].index = i;
+    document
+      .querySelector(`.book-${i + 1}`)
+      .classList.replace(`book-${i + 1}`, `book-${i}`);
+    document
+      .querySelector(`.delete-button-${i + 1}`)
+      .classList.replace(`delete-button-${i + 1}`, `delete-button-${i}`);
+  }
+}
+
 function cleanInputs() {
   for (i = 0; i < inputs.length; i++) {
     inputs[i].value = "";
@@ -67,12 +80,18 @@ function toggleForm() {
 
 function showInDOM(index) {
   for (i = index; i < myLibrary.length; i++) {
-    let temp = Object.assign(document.createElement("div"), {
+    let book = Object.assign(document.createElement("div"), {
       className: "card",
     });
+    book.classList.add(`book-${i}`); // index
     const cardLayout = modifyTemplate(myLibrary[i]);
-    temp.innerHTML = cardLayout;
-    container.appendChild(temp);
+    book.innerHTML = cardLayout;
+    book.querySelector(`.delete-button-${i}`).addEventListener(
+      "click",
+      (e) =>
+        removeBookFromLibrary(Number(e.target.classList.value.match(/\d+/)[0])) // highly cursed line
+    );
+    container.appendChild(book);
   }
 }
 
@@ -88,7 +107,7 @@ function modifyTemplate(book) {
     <div class="status">${book.status}</div>
   </div>
   <div class="ps-container2">
-    <img src="./icons/delete-forever.svg" alt="" srcset="" />
+    <img src="./icons/delete-forever.svg" alt="" srcset="" class="delete-button-${book.index}"/>
   </div>
   </div>
   `;
