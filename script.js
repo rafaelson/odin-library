@@ -9,10 +9,6 @@ Book.prototype.info = function () {
   return `${this.title} by ${this.author}, ${this.pages} pages, ${this.status}`;
 };
 
-const o1 = new Book("Lorem and Ipsum", "Nelson", 345, "read");
-const o2 = new Book("Something", "Nothing", 636, "not read yet");
-const o3 = new Book("dasopdaso", "dsfjisjjkd", 12, "read");
-
 let myLibrary = [];
 const container = document.querySelector(".container");
 const form = document.querySelector(".form");
@@ -74,24 +70,62 @@ function cleanInputs() {
   bookStatus.checked = false;
 }
 
+function toggleReadCheckbox(index) {
+  let checkbox = document.querySelector(`#read-toggle-${index}`);
+  checkbox.checked = !checkbox.checked;
+}
+
+function checkStatus(index) {
+  let status = document
+    .querySelector(`.book-${index}`)
+    .querySelector(".status");
+  if (status.textContent == "read") {
+    toggleReadCheckbox(index);
+  }
+}
+
+function changeStatus(index) {
+  let status = document
+    .querySelector(`.book-${index}`)
+    .querySelector(".status");
+  if (status.textContent == "read") {
+    status.textContent = "not read yet";
+    myLibrary[index].status = "not read yet";
+  } else {
+    status.textContent = "read";
+    myLibrary[index].status = "read";
+  }
+}
+
 function toggleForm() {
   form.classList.toggle("show-form");
 }
 
+function createBookElement(index) {
+  let book = Object.assign(document.createElement("div"), {
+    className: "card",
+  });
+  const cardLayout = modifyTemplate(myLibrary[index]);
+  book.classList.add(`book-${index}`); // index
+  book.innerHTML = cardLayout;
+  book.querySelector(`.delete-button-${index}`).addEventListener(
+    "click",
+    (e) =>
+      removeBookFromLibrary(Number(e.target.classList.value.match(/\d+/)[0])) // highly cursed line
+  );
+  book
+    .querySelector(`#read-toggle-${index}`)
+    .addEventListener("change", (e) =>
+      changeStatus(Number(e.target.id.match(/\d+/)[0]))
+    );
+  return book;
+}
+
 function showInDOM(index) {
   for (i = index; i < myLibrary.length; i++) {
-    let book = Object.assign(document.createElement("div"), {
-      className: "card",
-    });
-    book.classList.add(`book-${i}`); // index
-    const cardLayout = modifyTemplate(myLibrary[i]);
-    book.innerHTML = cardLayout;
-    book.querySelector(`.delete-button-${i}`).addEventListener(
-      "click",
-      (e) =>
-        removeBookFromLibrary(Number(e.target.classList.value.match(/\d+/)[0])) // highly cursed line
-    );
+    let book = createBookElement(i);
     container.appendChild(book);
+    checkStatus(i);
   }
 }
 
@@ -103,8 +137,11 @@ function modifyTemplate(book) {
   </div>
   <div class="page-status">
   <div class="ps-container1">
-    <div class="pages">${book.pages}</div>
-    <div class="status">${book.status}</div>
+    <div class="pages">${book.pages} pages</div>
+    <div class="toggle-status">
+      <div class="status">${book.status}</div>
+      <input type="checkbox" name="read-toggle" id="read-toggle-${book.index}" />
+    </div>
   </div>
   <div class="ps-container2">
     <img src="./icons/delete-forever.svg" alt="" srcset="" class="delete-button-${book.index}"/>
