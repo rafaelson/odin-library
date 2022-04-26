@@ -60,6 +60,9 @@ function dealWithIndexes(index) {
     document
       .querySelector(`.delete-button-${i + 1}`)
       .classList.replace(`delete-button-${i + 1}`, `delete-button-${i}`);
+    let toggle = document.querySelector(`#read-toggle-${i + 1}`);
+    toggle.previousElementSibling.htmlFor = `read-toggle-${i}`;
+    toggle.id = `read-toggle-${i}`;
   }
 }
 
@@ -139,7 +142,7 @@ function modifyTemplate(book) {
   <div class="ps-container1">
     <div class="pages">${book.pages} pages</div>
     <div class="toggle-status">
-      <div class="status">${book.status}</div>
+      <label for="read-toggle-${book.index}" class="status">${book.status}</label>
       <input type="checkbox" name="read-toggle" id="read-toggle-${book.index}" />
     </div>
   </div>
